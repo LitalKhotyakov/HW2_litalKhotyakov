@@ -36,8 +36,7 @@
                     android:id="@+id/panel_IMG_bombA0"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/img_bomb"
-                    />
+                    android:src="@drawable/img_bomb" />
 
                 <ImageView
                     android:id="@+id/panel_IMG_coinA0"
