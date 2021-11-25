@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.ButtonFragment">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fragment1_BTN_easy"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+
+        android:layout_marginTop="12dp"
+        android:text="Easy"
+        android:textColor="@color/black"
+        app:cornerRadius="50dp"
+        app:strokeColor="@color/black" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fragment1_BTN_hard"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment1_BTN_easy"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+
+        android:text="Hard"
+        android:textColor="@color/black"
+        app:cornerRadius="50dp"
+        app:strokeColor="@color/black" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fragment1_BTN_Top10"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment1_BTN_hard"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+
+        android:text="Top10"
+        android:textColor="@color/black"
+        app:cornerRadius="50dp"
+        app:strokeColor="@color/black" />
+
+
+
+</RelativeLayout>

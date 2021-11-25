@@ -1,4 +1,4 @@
-package com.example.hw2_litalkhotyakov;
+package com.example.hw2_litalkhotyakov.activities;
 
 import android.content.Context;
 import android.os.Build;
@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.hw2_litalkhotyakov.R;
 
 import java.util.Random;
 import java.util.Timer;
