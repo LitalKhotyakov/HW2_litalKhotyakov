@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.hw2_litalkhotyakov.R;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.ButtonFragmentCallBack;
 import com.google.android.material.button.MaterialButton;
 
 
@@ -21,11 +22,13 @@ public class ButtonFragment extends Fragment {
     private MaterialButton fragment1_BTN_Top10;
     private ButtonFragment(){}
     private AppCompatActivity activity;
+    private ButtonFragmentCallBack buttonFragmentCallBack;
 
 
-    public static ButtonFragment getInstance(AppCompatActivity appCompatActivity){
+    public static ButtonFragment getInstance(AppCompatActivity appCompatActivity,ButtonFragmentCallBack buttonFragmentCallBack){
         ButtonFragment buttonFragment = new ButtonFragment();
         buttonFragment.setActivity(appCompatActivity);
+        buttonFragment.buttonFragmentCallBack = buttonFragmentCallBack;
         Bundle args = new Bundle();
         buttonFragment.setArguments(args);
         return buttonFragment;
@@ -60,6 +63,9 @@ public class ButtonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("https", "Easy");
+                if (buttonFragmentCallBack != null) {
+                    buttonFragmentCallBack.easyButtonClicked();
+                }
             }
         });
 
@@ -67,6 +73,9 @@ public class ButtonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("https", "Hard");
+                if (buttonFragmentCallBack != null) {
+                    buttonFragmentCallBack.hardButtonClicked();
+                }
             }
         });
 
@@ -74,6 +83,9 @@ public class ButtonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("https", "Top10");
+                if (buttonFragmentCallBack != null) {
+                    buttonFragmentCallBack.top10ButtonClicked();
+                }
             }
         });
     }

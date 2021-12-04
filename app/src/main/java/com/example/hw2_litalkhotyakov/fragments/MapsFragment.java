@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.hw2_litalkhotyakov.R;
 import com.example.hw2_litalkhotyakov.activities.Activity_Panel;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.ButtonFragmentCallBack;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,14 +26,13 @@ public class MapsFragment extends Fragment {
 
     private AppCompatActivity activity;
 
-
     public static MapsFragment getInstance(AppCompatActivity appCompatActivity){
         MapsFragment mapsFragment = new MapsFragment();
         mapsFragment.setActivity(appCompatActivity);
+        Bundle args = new Bundle();
+        mapsFragment.setArguments(args);
         return mapsFragment;
     }
-
-
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 

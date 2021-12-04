@@ -1,20 +1,30 @@
 package com.example.hw2_litalkhotyakov.activities;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hw2_litalkhotyakov.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Random;
 import java.util.Timer;
@@ -32,6 +42,7 @@ public class GameActivity extends AppCompatActivity {
     private ImageView[][] bombs;
     private ImageView[][] coins;
     private TextView panel_LBL_score;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     private int[][] values;
     private Timer timer = new Timer();
     private int planeLoc = 0;
@@ -40,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
     private int lives = MAX_LIVES;
     private Boolean isRuning = false;
     private boolean esayGame = false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +64,46 @@ public class GameActivity extends AppCompatActivity {
         randomly();
         clickDirection();
         updateUI();
+        getLastLocation();
+
+
+
+
+    }
+
+    private void getLastLocation() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+
+                    if (getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED){
+
+                        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+
+                                if (location != null){
+                                    Double lat = location.getLatitude();
+                                    Double longt = location.getLongitude();
+//                                    textLocation.setText(lat + " " + longt);
+                                }
+                            }
+
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("onFailure", e.getMessage());
+
+                            }
+                        });
+
+                    }else {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+                    }
+                }
+
 
 
     }
@@ -61,6 +113,8 @@ public class GameActivity extends AppCompatActivity {
         super.onStart();
         startTimer();
     }
+
+
 
     private void startTimer() {
         isRuning = true;
