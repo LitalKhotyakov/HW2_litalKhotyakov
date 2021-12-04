@@ -24,11 +24,9 @@ public class MapsFragment extends Fragment {
 
     private MapsFragment(){}
 
-    private AppCompatActivity activity;
 
-    public static MapsFragment getInstance(AppCompatActivity appCompatActivity){
+    public static MapsFragment getInstance(){
         MapsFragment mapsFragment = new MapsFragment();
-        mapsFragment.setActivity(appCompatActivity);
         Bundle args = new Bundle();
         mapsFragment.setArguments(args);
         return mapsFragment;
@@ -73,7 +71,4 @@ public class MapsFragment extends Fragment {
 
 
 
-    public void setActivity(AppCompatActivity activity) {
-        this.activity = activity;
-    }
 }

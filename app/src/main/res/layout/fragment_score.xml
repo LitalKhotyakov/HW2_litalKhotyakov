@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.Activity_Panel"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    android:background="@color/white"
+    >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -22,18 +24,18 @@
             android:layout_height="0dp"
             android:layout_marginTop="24dp"
             android:layout_weight="1"
-            android:background="#FFFF00" />
+             />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_height="10dp" />
 
         <FrameLayout
             android:id="@+id/frame2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#B609FF" />
+             />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -7,7 +7,9 @@ import android.util.Log;
 
 import com.example.hw2_litalkhotyakov.R;
 import com.example.hw2_litalkhotyakov.fragments.ButtonFragment;
+import com.example.hw2_litalkhotyakov.fragments.ItemFragment;
 import com.example.hw2_litalkhotyakov.fragments.MapsFragment;
+import com.example.hw2_litalkhotyakov.fragments.ScoreFragment;
 import com.example.hw2_litalkhotyakov.fragments.callBacks.ButtonFragmentCallBack;
 
 public class Activity_Panel extends AppCompatActivity  {
@@ -21,7 +23,8 @@ public class Activity_Panel extends AppCompatActivity  {
         setContentView(R.layout.activity_panel);
 
 
-        getSupportFragmentManager().beginTransaction().add(R.id.panel_FRL_menu, ButtonFragment.getInstance(this,buttonFragmentCallBack)).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.panel_FRL_menu,
+                ButtonFragment.getInstance(this,buttonFragmentCallBack)).commit();
 
 //        mapsFragment = new MapsFragment();
 //        mapsFragment.setActivity(this);
@@ -41,7 +44,7 @@ public class Activity_Panel extends AppCompatActivity  {
         @Override
         public void top10ButtonClicked() {
             Log.d("lital", "top10ButtonClicked ");
-            getSupportFragmentManager().beginTransaction().add(R.id.panel_FRL_menu,MapsFragment.getInstance(Activity_Panel.this)).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.panel_FRL_menu, ScoreFragment.getInstance()).commit();
         }
     };
 

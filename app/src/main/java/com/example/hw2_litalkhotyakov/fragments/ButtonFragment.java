@@ -62,7 +62,6 @@ public class ButtonFragment extends Fragment {
         fragment1_BTN_easy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("https", "Easy");
                 if (buttonFragmentCallBack != null) {
                     buttonFragmentCallBack.easyButtonClicked();
                 }
@@ -72,7 +71,6 @@ public class ButtonFragment extends Fragment {
         fragment1_BTN_hard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("https", "Hard");
                 if (buttonFragmentCallBack != null) {
                     buttonFragmentCallBack.hardButtonClicked();
                 }
@@ -82,7 +80,6 @@ public class ButtonFragment extends Fragment {
         fragment1_BTN_Top10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("https", "Top10");
                 if (buttonFragmentCallBack != null) {
                     buttonFragmentCallBack.top10ButtonClicked();
                 }
