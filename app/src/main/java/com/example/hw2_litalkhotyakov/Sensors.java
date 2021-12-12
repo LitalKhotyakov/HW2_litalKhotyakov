@@ -45,6 +45,10 @@ public class Sensors {
             if (event.values[0] > 2) {
                 sensorCallBack.leftDirection();
             }
+            if (event.values[1] < -2){
+                sensorCallBack.goFaster();
+
+            }
         }
 
         @Override

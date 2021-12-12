@@ -62,6 +62,7 @@ public class GameActivity extends AppCompatActivity {
     private Boolean isRuning = false;
     private boolean esayGame = false;
     private LatLng locationProvider;
+    private int period = 1000;
 
 
     @Override
@@ -80,7 +81,6 @@ public class GameActivity extends AppCompatActivity {
         clickDirection();
         updateUI();
         getLastLocation();
-
 
 
     }
@@ -150,7 +150,7 @@ public class GameActivity extends AppCompatActivity {
                     });
                 }
             }
-        }, 0, 1000);
+        }, 0, period);
     }
 
     private void stopTimer() {
@@ -391,7 +391,7 @@ public class GameActivity extends AppCompatActivity {
             float y = event.values[1];
             float z = event.values[2];
 
-            if (event.values[0] < -2) {
+            if (event.values[0] < -3) {
                 panel_IMG_planes[planeLoc].setVisibility(View.GONE);
                 planeLoc++;
                 if (planeLoc > values.length - 1) {
@@ -399,13 +399,17 @@ public class GameActivity extends AppCompatActivity {
                 }
                 panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
             }
-            if (event.values[0] > 2) {
+            if (event.values[0] > 3) {
                 panel_IMG_planes[planeLoc].setVisibility(View.GONE);
                 planeLoc--;
                 if (planeLoc < 0) {
                     planeLoc = 0;
                 }
                 panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+            }
+            if (event.values[1] < -2) {
+                period = 1500;
+                startTimer();
             }
         }
 
@@ -451,6 +455,11 @@ public class GameActivity extends AppCompatActivity {
 //            }
 //            panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
 //        }
+//@Override
+//        public void goFaster() {
+//    period = 1500;
+//    startTimer();
+//}
 //    };
 
     private void startGame(String sns) {
