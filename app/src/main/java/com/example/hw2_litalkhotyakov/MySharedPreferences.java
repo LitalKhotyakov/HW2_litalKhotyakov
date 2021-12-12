@@ -8,6 +8,7 @@ import com.example.hw2_litalkhotyakov.modules.GameRecord;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MySharedPreferences {
@@ -55,12 +56,21 @@ public class MySharedPreferences {
         sharedPreferences.edit().putString(KEY, value).apply();
     }
 
-    public void saveGameRecordsList(List<GameRecord> gameRecords){
+    private void saveGameRecordsList(List<GameRecord> gameRecords){
         //arraylist convert into String using Gson
         Gson gson = new Gson();
         String data = gson.toJson(gameRecords);
         Log.e("TAG", "json:" + gson);
         putString("key" , data);
+    }
+
+    public void saveGameRecord(GameRecord gameRecord){
+        List<GameRecord> gameRecords = getGameRecord();
+        if (gameRecords == null){
+            gameRecords = new ArrayList<>();
+        }
+        gameRecords.add(gameRecord);
+        saveGameRecordsList(gameRecords);
     }
 
     public List<GameRecord> getGameRecord(){

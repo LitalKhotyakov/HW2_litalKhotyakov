@@ -1,16 +1,15 @@
 package com.example.hw2_litalkhotyakov.fragments;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hw2_litalkhotyakov.databinding.FragmentItemBinding;
-import com.example.hw2_litalkhotyakov.fragments.callBacks.ItemFragmentCallBack;
 import com.example.hw2_litalkhotyakov.fragments.callBacks.OnItemClickedCallBack;
 import com.example.hw2_litalkhotyakov.modules.GameRecord;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
@@ -37,9 +36,9 @@ public class MyGamesRecordAdapter extends RecyclerView.Adapter<MyGamesRecordAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.gameRecord = gameRecords.get(position);
-        holder.name.setText(gameRecords.get(position).getName());
-        holder.date.setText(gameRecords.get(position).getDate().toString());
-        holder.score.setText(gameRecords.get(position).getScore() + "");
+        holder.name.setText("Name: " + gameRecords.get(position).getName());
+        holder.date.setText("Date: " +gameRecords.get(position).getDate().toString());
+        holder.score.setText("Score: " +gameRecords.get(position).getScore() + "");
     }
 
     @Override
@@ -48,9 +47,9 @@ public class MyGamesRecordAdapter extends RecyclerView.Adapter<MyGamesRecordAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView name;
-        public final TextView date;
-        public final TextView score;
+        public final MaterialTextView name;
+        public final MaterialTextView date;
+        public final MaterialTextView score;
         public GameRecord gameRecord;
 
         public ViewHolder(FragmentItemBinding binding) {

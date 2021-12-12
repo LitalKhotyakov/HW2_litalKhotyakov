@@ -17,25 +17,44 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/panel_LBL_top10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Top10"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <FrameLayout
             android:id="@+id/frame1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="24dp"
-            android:layout_weight="1"
-             />
+            android:layout_weight="1" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/panel_LBL_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Map"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/frame2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-             />
+            android:layout_weight="1" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

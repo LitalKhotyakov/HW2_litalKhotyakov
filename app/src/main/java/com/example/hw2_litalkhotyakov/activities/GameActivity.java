@@ -2,6 +2,7 @@ package com.example.hw2_litalkhotyakov.activities;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -10,7 +11,6 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,12 +20,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hw2_litalkhotyakov.MySharedPreferences;
 import com.example.hw2_litalkhotyakov.R;
+import com.example.hw2_litalkhotyakov.Sensors;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.SensorCallBack;
+import com.example.hw2_litalkhotyakov.modules.GameRecord;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -51,12 +57,17 @@ public class GameActivity extends AppCompatActivity {
     private int lives = MAX_LIVES;
     private Boolean isRuning = false;
     private boolean esayGame = false;
+    private LatLng locationProvider;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
+        Intent intent = getIntent();
+        if (intent != null){
+            esayGame = intent.getBooleanExtra("esayGame",true);
+        }
         findViews();
         initGame();
         initValMatrix();
@@ -72,6 +83,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void getLastLocation() {
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
 
@@ -87,6 +99,7 @@ public class GameActivity extends AppCompatActivity {
                                 if (location != null){
                                     Double lat = location.getLatitude();
                                     Double longt = location.getLongitude();
+                                    locationProvider = new LatLng(lat,longt);
 //                                    textLocation.setText(lat + " " + longt);
                                 }
                             }
@@ -215,6 +228,8 @@ public class GameActivity extends AppCompatActivity {
         if (lives == 0) {
             stopTimer();
 //            startActivity(new Intent(this, EndGameActivity.class));
+            GameRecord gameRecord = new GameRecord(locationProvider,score, new Date() ,"lital");
+            MySharedPreferences.getMe().saveGameRecord(gameRecord);
             finish();
         }
     }
@@ -348,5 +363,37 @@ public class GameActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         stopTimer();
+    }
+
+    private SensorCallBack sensorCallBack = new SensorCallBack() {
+        @Override
+        public void rightDirection() {
+            panel_IMG_planes[planeLoc].setVisibility(View.GONE);
+            planeLoc++;
+            if (planeLoc > values.length - 1) {
+                planeLoc = values.length - 1;
+            }
+            panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void leftDirection() {
+            panel_IMG_planes[planeLoc].setVisibility(View.GONE);
+            planeLoc--;
+            if (planeLoc < 0) {
+                planeLoc = 0;
+            }
+            panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+        }
+    };
+
+    private void startGame(String sns) {
+        Intent myIntent = new Intent(this, Sensors.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Sensors.SENSOR_TYPE,sns);
+
+        myIntent.putExtra("Bundle", bundle);
+        startActivity(myIntent);
     }
 }
