@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
@@ -65,8 +69,8 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_layout);
         Intent intent = getIntent();
-        if (intent != null){
-            esayGame = intent.getBooleanExtra("esayGame",true);
+        if (intent != null) {
+            esayGame = intent.getBooleanExtra("esayGame", true);
         }
         findViews();
         initGame();
@@ -79,7 +83,6 @@ public class GameActivity extends AppCompatActivity {
 
 
 
-
     }
 
     private void getLastLocation() {
@@ -87,36 +90,35 @@ public class GameActivity extends AppCompatActivity {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                    if (getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED){
+            if (getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
 
-                        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
+                fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
 
-                                if (location != null){
-                                    Double lat = location.getLatitude();
-                                    Double longt = location.getLongitude();
-                                    locationProvider = new LatLng(lat,longt);
+                        if (location != null) {
+                            Double lat = location.getLatitude();
+                            Double longt = location.getLongitude();
+                            locationProvider = new LatLng(lat, longt);
 //                                    textLocation.setText(lat + " " + longt);
-                                }
-                            }
-
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("onFailure", e.getMessage());
-
-                            }
-                        });
-
-                    }else {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+                        }
                     }
-                }
 
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("onFailure", e.getMessage());
+
+                    }
+                });
+
+            } else {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
 
 
     }
@@ -126,7 +128,6 @@ public class GameActivity extends AppCompatActivity {
         super.onStart();
         startTimer();
     }
-
 
 
     private void startTimer() {
@@ -204,8 +205,8 @@ public class GameActivity extends AppCompatActivity {
 
     private void randomly() {
         final int random = new Random().nextInt(values.length);
-        values[random][0] = (new Random().nextInt(5)) ==0 ? 2 : 1;
-        if (esayGame){
+        values[random][0] = (new Random().nextInt(5)) == 0 ? 2 : 1;
+        if (esayGame) {
             values[random][0] = 1;
         }
 
@@ -213,7 +214,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void checkCrashing() {
         int lange = values[0].length - 1;
-        if (esayGame){
+        if (esayGame) {
             lange = 4;
         }
         if (values[planeLoc][lange] == 1) {
@@ -228,7 +229,7 @@ public class GameActivity extends AppCompatActivity {
         if (lives == 0) {
             stopTimer();
 //            startActivity(new Intent(this, EndGameActivity.class));
-            GameRecord gameRecord = new GameRecord(locationProvider,score, new Date() ,"lital");
+            GameRecord gameRecord = new GameRecord(locationProvider, score, new Date(), "lital");
             MySharedPreferences.getMe().saveGameRecord(gameRecord);
             finish();
         }
@@ -264,13 +265,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        if (esayGame){
+        if (esayGame) {
             panel_IMG_planes = new ImageView[]{
                     findViewById(R.id.panel_IMG_plane5),
                     findViewById(R.id.panel_IMG_plane6),
                     findViewById(R.id.panel_IMG_plane7)
             };
-        }else {
+        } else {
             panel_IMG_planes = new ImageView[]{
                     findViewById(R.id.panel_IMG_plane0),
                     findViewById(R.id.panel_IMG_plane1),
@@ -315,7 +316,7 @@ public class GameActivity extends AppCompatActivity {
             panel_LINL_lineE = findViewById(R.id.panel_LINL_lineE);
         }
 
-        }
+    }
 
 
     private void initGame() {
@@ -324,10 +325,15 @@ public class GameActivity extends AppCompatActivity {
             plane.setVisibility(View.GONE);
         }
         panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+        panel_IMG_left_direction.setVisibility(View.GONE);
+        panel_IMG_right_direction.setVisibility(View.GONE);
+        initSensor();
 
         if (esayGame) {
             panel_LINL_lineD.setVisibility(View.GONE);
             panel_LINL_lineE.setVisibility(View.GONE);
+            panel_IMG_left_direction.setVisibility(View.VISIBLE);
+            panel_IMG_right_direction.setVisibility(View.VISIBLE);
             for (int i = 0; i < panel_LINL_lines.length; i++) {
                 for (int j = 4; j < panel_LINL_lines[i].length; j++) {
                     panel_LINL_lines[i][j].setVisibility(View.GONE);
@@ -365,35 +371,97 @@ public class GameActivity extends AppCompatActivity {
         stopTimer();
     }
 
-    private SensorCallBack sensorCallBack = new SensorCallBack() {
+    public static final String SENSOR_TYPE = "SENSOR_TYPE";
+
+
+    private SensorManager sensorManager;
+    private android.hardware.Sensor accSensor;
+
+
+    private void initSensor() {
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accSensor = sensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_ACCELEROMETER);
+    }
+
+    private SensorEventListener accSensorEventListener = new SensorEventListener() {
         @Override
-        public void rightDirection() {
-            panel_IMG_planes[planeLoc].setVisibility(View.GONE);
-            planeLoc++;
-            if (planeLoc > values.length - 1) {
-                planeLoc = values.length - 1;
+        public void onSensorChanged(SensorEvent event) {
+            DecimalFormat df = new DecimalFormat("##.##");
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            if (event.values[0] < -2) {
+                panel_IMG_planes[planeLoc].setVisibility(View.GONE);
+                planeLoc++;
+                if (planeLoc > values.length - 1) {
+                    planeLoc = values.length - 1;
+                }
+                panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
             }
-            panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+            if (event.values[0] > 2) {
+                panel_IMG_planes[planeLoc].setVisibility(View.GONE);
+                planeLoc--;
+                if (planeLoc < 0) {
+                    planeLoc = 0;
+                }
+                panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
-        public void leftDirection() {
-            panel_IMG_planes[planeLoc].setVisibility(View.GONE);
-            planeLoc--;
-            if (planeLoc < 0) {
-                planeLoc = 0;
-            }
-            panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+        public void onAccuracyChanged(android.hardware.Sensor sensor, int accuracy) {
+
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(accSensorEventListener, accSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(accSensorEventListener);
+    }
+
+    public boolean isSensorExist(int sensorType) {
+        return (sensorManager.getDefaultSensor(sensorType) != null);
+    }
+
+//    private SensorCallBack sensorCallBack = new SensorCallBack() {
+//        @Override
+//        public void rightDirection() {
+//            panel_IMG_planes[planeLoc].setVisibility(View.GONE);
+//            planeLoc++;
+//            if (planeLoc > values.length - 1) {
+//                planeLoc = values.length - 1;
+//            }
+//            panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+//        }
+//
+//        @Override
+//        public void leftDirection() {
+//            panel_IMG_planes[planeLoc].setVisibility(View.GONE);
+//            planeLoc--;
+//            if (planeLoc < 0) {
+//                planeLoc = 0;
+//            }
+//            panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
+//        }
+//    };
 
     private void startGame(String sns) {
         Intent myIntent = new Intent(this, Sensors.class);
 
         Bundle bundle = new Bundle();
-        bundle.putString(Sensors.SENSOR_TYPE,sns);
+        bundle.putString(Sensors.SENSOR_TYPE, sns);
 
         myIntent.putExtra("Bundle", bundle);
         startActivity(myIntent);
     }
+
+
 }

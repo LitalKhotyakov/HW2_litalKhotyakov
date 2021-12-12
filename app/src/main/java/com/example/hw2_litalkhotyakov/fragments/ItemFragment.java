@@ -26,6 +26,8 @@ import com.example.hw2_litalkhotyakov.modules.GameRecord;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +68,17 @@ public class ItemFragment extends Fragment {
             gameRecords.add(new GameRecord(new LatLng(3,3),320,new Date(),"mor"));
         }
         //sort
+        sortList();
+    }
+
+    private void sortList() {
+        Collections.sort(gameRecords, new Comparator<GameRecord>() {
+            @Override
+            public int compare(GameRecord lhs, GameRecord rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                return lhs.getScore() > rhs.getScore() ? -1 : (lhs.getScore() < rhs.getScore()) ? 1 : 0;
+            }
+        });
     }
 
     @Override
