@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import android.view.ViewGroup;
 import com.example.hw2_litalkhotyakov.R;
 import com.example.hw2_litalkhotyakov.activities.Activity_Panel;
 import com.example.hw2_litalkhotyakov.fragments.callBacks.ButtonFragmentCallBack;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.ItemFragmentCallBack;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.MapsFragmentCallBack;
+import com.example.hw2_litalkhotyakov.modules.GameRecord;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,6 +25,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsFragment extends Fragment {
+
+    private MapsFragmentCallBack mapsFragmentCallBack;
+    private GoogleMap googleMap;
 
     private MapsFragment(){}
 
@@ -48,6 +55,33 @@ public class MapsFragment extends Fragment {
             LatLng sydney = new LatLng(-34, 151);
             googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            MapsFragment.this.googleMap = googleMap;
+
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                @Override
+                public void onMapClick(LatLng latLng) {
+
+                    // Creating a marker
+                    MarkerOptions markerOptions = new MarkerOptions();
+
+                    // Setting the position for the marker
+                    markerOptions.position(latLng);
+
+                    // Setting the title for the marker.
+                    // This will be displayed on taping the marker
+                    markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+
+                    // Clears the previously touched position
+                    googleMap.clear();
+
+                    // Animating to the touched position
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                    // Placing a marker on the touched position
+                    googleMap.addMarker(markerOptions);
+                }
+            });
         }
     };
 
@@ -67,6 +101,31 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+    }
+
+    public void setGameRecord(GameRecord gameRecord){
+        if (googleMap != null) {
+            // Creating a marker
+            MarkerOptions markerOptions = new MarkerOptions();
+
+            // Setting the position for the marker
+            markerOptions.position(gameRecord.getLocation());
+
+            // Setting the title for the marker.
+            // This will be displayed on taping the marker
+            markerOptions.title(" " + gameRecord.getScore());
+
+            // Clears the previously touched position
+            googleMap.clear();
+
+            // Animating to the touched position
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gameRecord.getLocation(),14));
+
+            // Placing a marker on the touched position
+            googleMap.addMarker(markerOptions);
+        }
+            Log.d("lital", "location: " + gameRecord.getLocation());
+
     }
 
 

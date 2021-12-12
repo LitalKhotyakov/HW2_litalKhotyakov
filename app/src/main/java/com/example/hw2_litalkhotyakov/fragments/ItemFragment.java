@@ -17,7 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hw2_litalkhotyakov.MySharedPreferences;
 import com.example.hw2_litalkhotyakov.R;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.ButtonFragmentCallBack;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.ItemFragmentCallBack;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.OnItemClickedCallBack;
 import com.example.hw2_litalkhotyakov.modules.GameRecord;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -31,6 +35,9 @@ import java.util.List;
 public class ItemFragment extends Fragment {
     private AppCompatActivity activity;
     private List<GameRecord> gameRecords;
+    private ItemFragmentCallBack itemFragmentCallBack;
+
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -40,9 +47,10 @@ public class ItemFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ItemFragment getInstance() {
+    public static ItemFragment getInstance(ItemFragmentCallBack itemFragmentCallBack) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
+        fragment.itemFragmentCallBack = itemFragmentCallBack;
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,9 +58,12 @@ public class ItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gameRecords = new ArrayList<>();
-        gameRecords.add(new GameRecord(new LatLng(1,1),200,new Date(),"lital"));
-        gameRecords.add(new GameRecord(new LatLng(1,2),100,new Date(),"david"));
+        gameRecords = MySharedPreferences.getMe().getGameRecord();
+        if (gameRecords == null){
+            gameRecords = new ArrayList<>();
+            gameRecords.add(new GameRecord(new LatLng(1,1),200,new Date(),"lital"));
+            gameRecords.add(new GameRecord(new LatLng(2,2),100,new Date(),"david"));
+        }
     }
 
     @Override
@@ -64,14 +75,24 @@ public class ItemFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyGamesRecordAdapter(gameRecords));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            MyGamesRecordAdapter myGamesRecordAdapter = new MyGamesRecordAdapter(gameRecords);
+            myGamesRecordAdapter.setOnItemClickedCallBack(onItemClickedCallBack);
+            recyclerView.setAdapter(myGamesRecordAdapter);
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), VERTICAL);
             recyclerView.addItemDecoration(dividerItemDecoration);
-
         }
         return view;
     }
+
+    private OnItemClickedCallBack onItemClickedCallBack = new OnItemClickedCallBack() {
+        @Override
+        public void onItemClicked(GameRecord gameRecord) {
+            itemFragmentCallBack.itemClicked(gameRecord);
+        }
+    };
+
+
 
     public void setActivity(AppCompatActivity activity) {
         this.activity = activity;

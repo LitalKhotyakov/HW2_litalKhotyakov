@@ -163,7 +163,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-
     private void clickDirection() {
         panel_IMG_left_direction.setOnClickListener(new View.OnClickListener() {
             @Override

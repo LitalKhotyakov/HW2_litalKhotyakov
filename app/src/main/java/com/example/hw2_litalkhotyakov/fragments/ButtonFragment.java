@@ -20,10 +20,10 @@ public class ButtonFragment extends Fragment {
     private MaterialButton fragment1_BTN_easy;
     private MaterialButton fragment1_BTN_hard;
     private MaterialButton fragment1_BTN_Top10;
-    private ButtonFragment(){}
     private AppCompatActivity activity;
     private ButtonFragmentCallBack buttonFragmentCallBack;
 
+    private ButtonFragment(){}
 
     public static ButtonFragment getInstance(AppCompatActivity appCompatActivity,ButtonFragmentCallBack buttonFragmentCallBack){
         ButtonFragment buttonFragment = new ButtonFragment();

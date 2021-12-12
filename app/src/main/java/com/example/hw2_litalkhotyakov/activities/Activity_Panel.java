@@ -11,6 +11,7 @@ import com.example.hw2_litalkhotyakov.fragments.ItemFragment;
 import com.example.hw2_litalkhotyakov.fragments.MapsFragment;
 import com.example.hw2_litalkhotyakov.fragments.ScoreFragment;
 import com.example.hw2_litalkhotyakov.fragments.callBacks.ButtonFragmentCallBack;
+import com.example.hw2_litalkhotyakov.fragments.callBacks.ItemFragmentCallBack;
 
 public class Activity_Panel extends AppCompatActivity  {
 
@@ -36,7 +37,6 @@ public class Activity_Panel extends AppCompatActivity  {
         public void easyButtonClicked() {
             Log.d("lital", "easyButtonClicked ");
         }
-
         @Override
         public void hardButtonClicked() {
             Log.d("lital", "hardButtonClicked ");
@@ -47,6 +47,8 @@ public class Activity_Panel extends AppCompatActivity  {
             getSupportFragmentManager().beginTransaction().add(R.id.panel_FRL_menu, ScoreFragment.getInstance()).commit();
         }
     };
+
+
 
 
 }
