@@ -13,10 +13,6 @@ import com.example.hw2_litalkhotyakov.fragments.callBacks.ButtonFragmentCallBack
 
 public class Activity_Panel extends AppCompatActivity  {
 
-    private MapsFragment mapsFragment;
-    private  GameActivity gameActivity;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,5 +45,17 @@ public class Activity_Panel extends AppCompatActivity  {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
 
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+
+    }
 }

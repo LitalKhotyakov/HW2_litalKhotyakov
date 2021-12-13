@@ -25,8 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hw2_litalkhotyakov.MySharedPreferences;
 import com.example.hw2_litalkhotyakov.R;
-import com.example.hw2_litalkhotyakov.Sensors;
-import com.example.hw2_litalkhotyakov.fragments.callBacks.SensorCallBack;
 import com.example.hw2_litalkhotyakov.modules.GameRecord;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -60,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
     private final int MAX_LIVES = 3;
     private int lives = MAX_LIVES;
     private Boolean isRuning = false;
-    private boolean esayGame = false;
+    private boolean easyGame = false;
     private LatLng locationProvider;
     private int period = 1000;
 
@@ -71,7 +69,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.game_layout);
         Intent intent = getIntent();
         if (intent != null) {
-            esayGame = intent.getBooleanExtra("esayGame", true);
+            easyGame = intent.getBooleanExtra("esayGame", true);
         }
         findViews();
         initGame();
@@ -103,7 +101,6 @@ public class GameActivity extends AppCompatActivity {
                             Double lat = location.getLatitude();
                             Double longt = location.getLongitude();
                             locationProvider = new LatLng(lat, longt);
-//                                    textLocation.setText(lat + " " + longt);
                         }
                     }
 
@@ -206,7 +203,7 @@ public class GameActivity extends AppCompatActivity {
     private void randomly() {
         final int random = new Random().nextInt(values.length);
         values[random][0] = (new Random().nextInt(5)) == 0 ? 2 : 1;
-        if (esayGame) {
+        if (easyGame) {
             values[random][0] = 1;
         }
 
@@ -214,7 +211,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void checkCrashing() {
         int lange = values[0].length - 1;
-        if (esayGame) {
+        if (easyGame) {
             lange = 4;
         }
         if (values[planeLoc][lange] == 1) {
@@ -265,7 +262,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        if (esayGame) {
+        if (easyGame) {
             panel_IMG_planes = new ImageView[]{
                     findViewById(R.id.panel_IMG_plane5),
                     findViewById(R.id.panel_IMG_plane6),
@@ -306,7 +303,7 @@ public class GameActivity extends AppCompatActivity {
         values = new int[bombs.length][bombs[0].length];
         panel_LBL_score = findViewById(R.id.panel_LBL_score);
 
-        if (esayGame) {
+        if (easyGame) {
             panel_LINL_lines = new LinearLayout[][]{
                     {findViewById(R.id.panel_LINL_A1), findViewById(R.id.panel_LINL_A2), findViewById(R.id.panel_LINL_A3), findViewById(R.id.panel_LINL_A4), findViewById(R.id.panel_LINL_A5), findViewById(R.id.panel_LINL_A6), findViewById(R.id.panel_LINL_A7)},
                     {findViewById(R.id.panel_LINL_B1), findViewById(R.id.panel_LINL_B2), findViewById(R.id.panel_LINL_B3), findViewById(R.id.panel_LINL_B4), findViewById(R.id.panel_LINL_B5), findViewById(R.id.panel_LINL_B6), findViewById(R.id.panel_LINL_B7)},
@@ -329,7 +326,7 @@ public class GameActivity extends AppCompatActivity {
         panel_IMG_right_direction.setVisibility(View.GONE);
         initSensor();
 
-        if (esayGame) {
+        if (easyGame) {
             panel_LINL_lineD.setVisibility(View.GONE);
             panel_LINL_lineE.setVisibility(View.GONE);
             panel_IMG_left_direction.setVisibility(View.VISIBLE);
@@ -407,8 +404,9 @@ public class GameActivity extends AppCompatActivity {
                 }
                 panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
             }
-            if (event.values[1] < -2) {
-                period = 1500;
+            if (event.values[1] < -3) {
+                stopTimer();
+                period = 900;
                 startTimer();
             }
         }
@@ -455,22 +453,23 @@ public class GameActivity extends AppCompatActivity {
 //            }
 //            panel_IMG_planes[planeLoc].setVisibility(View.VISIBLE);
 //        }
-//@Override
+//
+//        @Override
 //        public void goFaster() {
-//    period = 1500;
-//    startTimer();
-//}
+//            period = 1500;
+//            startTimer();
+//        }
 //    };
 
-    private void startGame(String sns) {
-        Intent myIntent = new Intent(this, Sensors.class);
-
-        Bundle bundle = new Bundle();
-        bundle.putString(Sensors.SENSOR_TYPE, sns);
-
-        myIntent.putExtra("Bundle", bundle);
-        startActivity(myIntent);
-    }
+//    private void startGame(String sns) {
+//        Intent myIntent = new Intent(this, Sensors.class);
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putString(Sensors.SENSOR_TYPE, sns);
+//
+//        myIntent.putExtra("Bundle", bundle);
+//        startActivity(myIntent);
+//    }
 
 
 }

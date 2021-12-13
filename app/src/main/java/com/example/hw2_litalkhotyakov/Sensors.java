@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hw2_litalkhotyakov.R;
+import com.example.hw2_litalkhotyakov.activities.GameActivity;
 import com.example.hw2_litalkhotyakov.fragments.callBacks.SensorCallBack;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -23,11 +24,16 @@ public class Sensors {
     private SensorManager sensorManager;
     private android.hardware.Sensor accSensor;
     private SensorCallBack sensorCallBack;
+    private  Context mContext;
 
+    public Sensors() {}
 
+    public Sensors(Context mContext) {
+        this.mContext = mContext;
+    }
 
     private void initSensor() {
-//        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         accSensor = sensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_ACCELEROMETER);
     }
 
@@ -56,6 +62,14 @@ public class Sensors {
 
         }
     };
+
+    public void registerListener(){
+        sensorManager.registerListener(accSensorEventListener, accSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void unregisterListener(){
+        sensorManager.unregisterListener(accSensorEventListener);
+    }
 
 //    @Override
 //    protected void onResume() {

@@ -50,7 +50,6 @@ public class ScoreFragment extends Fragment {
     private ItemFragmentCallBack itemFragmentCallBack = new ItemFragmentCallBack() {
         @Override
         public void itemClicked(GameRecord gameRecord) {
-            Log.d("lital", "itemClicked ");
             mapsFragment.setGameRecord(gameRecord);
         }
     };

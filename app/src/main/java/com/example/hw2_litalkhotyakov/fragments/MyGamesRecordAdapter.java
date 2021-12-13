@@ -36,7 +36,6 @@ public class MyGamesRecordAdapter extends RecyclerView.Adapter<MyGamesRecordAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.gameRecord = gameRecords.get(position);
-        holder.name.setText("Name: " + gameRecords.get(position).getName());
         holder.date.setText("Date: " +gameRecords.get(position).getDate().toString());
         holder.score.setText("Score: " +gameRecords.get(position).getScore() + "");
     }
@@ -47,14 +46,12 @@ public class MyGamesRecordAdapter extends RecyclerView.Adapter<MyGamesRecordAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final MaterialTextView name;
         public final MaterialTextView date;
         public final MaterialTextView score;
         public GameRecord gameRecord;
 
         public ViewHolder(FragmentItemBinding binding) {
             super(binding.getRoot());
-            name = binding.itemName;
             date = binding.itemDate;
             score = binding.itemScore;
             binding.itemLayout.setOnClickListener(new View.OnClickListener() {

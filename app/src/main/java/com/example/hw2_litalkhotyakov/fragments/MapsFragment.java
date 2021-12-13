@@ -124,7 +124,6 @@ public class MapsFragment extends Fragment {
             // Placing a marker on the touched position
             googleMap.addMarker(markerOptions);
         }
-            Log.d("lital", "location: " + gameRecord.getLocation());
 
     }
 

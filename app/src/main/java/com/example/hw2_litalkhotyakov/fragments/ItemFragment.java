@@ -67,7 +67,6 @@ public class ItemFragment extends Fragment {
             gameRecords.add(new GameRecord(new LatLng(2,2),100,new Date(),"david"));
             gameRecords.add(new GameRecord(new LatLng(3,3),320,new Date(),"mor"));
         }
-        //sort
         sortList();
     }
 
